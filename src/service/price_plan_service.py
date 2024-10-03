@@ -1,8 +1,10 @@
+import json
 from functools import reduce
 
 from ..repository.price_plan_repository import price_plan_repository
 from .electricity_reading_service import ElectricityReadingService
 from .time_converter import time_elapsed_in_hours
+from ..domain.price_plan import PricePlan
 
 
 def calculate_time_elapsed(readings):
@@ -41,3 +43,13 @@ class PricePlanService:
     def calculate_average_reading(self, readings):
         sum = reduce((lambda p, c: p + c), map(lambda r: r.reading, readings), 0)
         return sum / len(readings)
+
+    def store_peak_multipliers(self, price_plan_id, json):
+        return price_plan_repository.store_peak_multipliers(
+            price_plan_id,
+            list(
+                map(
+                    lambda x: PricePlan.PeakTimeMultiplier(x["dayOfWeek"], x["multiplier"]), json["peakTimeMultipliers"]
+                )
+            ),
+        )

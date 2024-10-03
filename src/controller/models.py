@@ -18,6 +18,16 @@ class PricePlanComparisons(BaseModel):
     pricePlanComparisons: List[dict]
 
 
+class PeakTimeMultipliers(BaseModel):
+    dayOfWeek: int
+    multiplier: float
+
+
+class PricePlanPeakTimeMultipliers(BaseModel):
+    pricePlanId: str
+    peakTimeMultipliers: List[PeakTimeMultipliers]
+
+
 OPENAPI_EXAMPLES = {
     "Sarah": {"value": "smart-meter-0"},
     "Peter": {"value": "smart-meter-1"},
